@@ -22,11 +22,15 @@ export default (ctx) => {
     })
 
   app.put('/:id',
-    auth.requireMembership(ROLE.ADMIN_BODY),
+    (req, res, next) => { 
+      projekty.canIUpdate(req.params.id, auth.getUID(req), knex).then(can => {
+        return can ? next() : next(401)
+      }).catch(next)
+    },
     JSONBodyParser,
     (req, res, next) => {
-      body.update(req.params.id, req.body, knex)
-        .then(created => { res.json(created) })
+      projekty.update(req.params.id, req.body, knex)
+        .then(updated => { res.json(updated[0]) })
         .catch(next)
     })
 

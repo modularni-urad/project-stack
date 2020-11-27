@@ -3,7 +3,7 @@ import { whereFilter } from 'knex-filter-loopback'
 import _ from 'underscore'
 import { TNAMES } from '../consts'
 
-export default { create, update, list }
+export default { create, update, list, canIUpdate }
 
 function list (query, knex) {
   const perPage = Number(query.perPage) || 10
@@ -31,4 +31,10 @@ function create (data, author, knex) {
 function update (id, data, knex) {
   data = _.pick(data, editables)
   return knex(TNAMES.PROJEKTY).where({ id }).update(data).returning('*')
+}
+
+function canIUpdate (id, user, knex) {
+  return knex(TNAMES.PROJEKTY).where({ id }).first().then(p => {
+    return Number(p.manager) === Number(user)
+  })
 }
