@@ -19,7 +19,7 @@ function list (query, knex) {
 }
 
 const editables = [
-  'nazev', 'popis', 'cena', 'stadium', 'poloha'
+  'nazev', 'popis', 'cena', 'stadium', 'poloha', 'zanr'
 ]
 
 function create (data, author, knex) {

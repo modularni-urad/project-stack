@@ -11,6 +11,7 @@ exports.up = (knex, Promise) => {
     table.float('cena')
     table.string('poloha').notNullable()
     table.string('stadium', 16).notNullable().defaultTo('draft')
+    table.string('zanr', 16).notNullable()
     table.timestamp('created').notNullable().defaultTo(knex.fn.now())
   })
 }
