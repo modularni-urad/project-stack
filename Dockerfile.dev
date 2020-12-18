@@ -1,0 +1,8 @@
+FROM node:12.18-alpine as debug
+
+WORKDIR /usr/src/app
+COPY package.json .
+RUN npm install --no-cache
+RUN npm install -g nodemon
+COPY . .
+ENTRYPOINT [ "nodemon", "-r", "esm", "--inspect=0.0.0.0", "server.js" ]
