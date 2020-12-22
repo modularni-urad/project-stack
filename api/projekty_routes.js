@@ -17,7 +17,7 @@ export default (ctx) => {
     JSONBodyParser,
     (req, res, next) => {
       projekty.create(req.body, auth.getUID(req), knex)
-        .then(created => { res.json(created) })
+        .then(created => { res.json(created[0]) })
         .catch(next)
     })
 

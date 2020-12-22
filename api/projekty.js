@@ -2,7 +2,7 @@
 import { whereFilter } from 'knex-filter-loopback'
 import _ from 'underscore'
 import { TNAMES } from '../consts'
-const ORG_ID = process.ENV.ORG_ID
+const ORG_ID = parseInt(process.env.ORG_ID)
 
 export default { create, update, list, canIUpdate }
 
