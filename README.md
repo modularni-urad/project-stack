@@ -17,6 +17,7 @@ Pouze pomocí ENVIRONMENT VARIABLES, jsou samovysvětlující:
 - DATABASE_URL=postgres://username:secret@localhost:5432/moje_db
 - REDIS_URL=redis://redis:6379
 - SESSION_SECRET=secretProZabezpeceniSession
+- ORG_ID=cisloObcePodle[CISOB](http://apl.czso.cz/iSMS/cisdet.jsp?kodcis=43)
 
 [Dockerfile](Dockerfile) umožňuje nasadit jako kontejner,
 idealně pomocí orchestrátoru jako např. [kubernetes](https://kubernetes.io/).

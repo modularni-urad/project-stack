@@ -2,6 +2,7 @@
 import { whereFilter } from 'knex-filter-loopback'
 import _ from 'underscore'
 import { TNAMES } from '../consts'
+const ORG_ID = process.ENV.ORG_ID
 
 export default { create, update, list, canIUpdate }
 
@@ -25,6 +26,7 @@ const editables = [
 function create (data, author, knex) {
   data = _.pick(data, editables)
   data.manager = author
+  data.orgid = ORG_ID
   return knex(TNAMES.PROJEKTY).insert(data).returning('*')
 }
 
