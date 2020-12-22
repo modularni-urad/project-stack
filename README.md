@@ -21,3 +21,20 @@ Pouze pomocí ENVIRONMENT VARIABLES, jsou samovysvětlující:
 
 [Dockerfile](Dockerfile) umožňuje nasadit jako kontejner,
 idealně pomocí orchestrátoru jako např. [kubernetes](https://kubernetes.io/).
+
+### Debugging
+
+Hezká věc je debugging kodu běžícího v podu v rámci lokálního [minikube](https://github.com/kubernetes/minikube).
+K tomu je zapotřebí [vydeployovat kod do minikube clusteru](https://medium.com/swlh/how-to-run-locally-built-docker-images-in-kubernetes-b28fbc32cc1d).
+Finálním krokem v tomto procesu je build:
+```
+docker build . -f Dockerfile.dev -t modularni-urad/project-stack
+```
+
+Pak minikube zařídí běh podu s vybuildovaným image kde, krom vlastního kodu
+poslouchá node remote debugger na portu 9229.
+Napojit se na něj lze po portforwardu tohoto portu 9229 z podu na host mašinu:
+```
+kubectl port-forward project-stack 9229:9229
+```
+Kde už se na něj napojíte např. z VSCode.
