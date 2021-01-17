@@ -14,8 +14,8 @@ export async function init (mocks = null) {
     : await initDB(migrationsDir)
   attachPaginate()
   const app = express()
-  const JSONBodyParser = bodyParser.json({ limit: '50MB' })
-  const auth = mocks ? mocks.auth : initAuth(app)
+  const JSONBodyParser = bodyParser.json()
+  const auth = initAuth(app)
   const appContext = { express, knex, auth, JSONBodyParser }
 
   app.use(InitApp(appContext))
