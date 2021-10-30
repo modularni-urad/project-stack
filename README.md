@@ -1,6 +1,6 @@
 # project-stack-api - Zásobník projektů
 
-Slouží pro správu a prezentaci investičních i neinvestičních projektů organizace.
+Slouží pro správu a prezentaci investičních i neinvestičních [projektů](https://www.smocr.cz/Shared/Clanky/6622/3-sulmanova-projektove-rizeni.pdf) organizace.
 Každá [aktivita má svou kartu](http://www.projektmanazer.cz/sites/default/files/dokumenty/1-4projektovyzamer.pdf) se standardními atributy alá [projektová fiše](https://www.infoz.cz/projektova-fise/) + info o stavu.
 Pro občany vizualizace v mapě pomocí špendliků (barva dle žánru) a po nákliku zobrazení karty s detaily projektu. + možnost filtrovat.
 
