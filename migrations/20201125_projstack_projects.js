@@ -1,9 +1,9 @@
-import { TNAMES, MULTITENANT } from '../consts'
+import { TNAMES } from '../consts'
 
 exports.up = (knex, Promise) => {
   return knex.schema.createTable(TNAMES.PROJEKTY, (table) => {
     table.increments('id').primary()
-    MULTITENANT && table.integer('orgid').notNullable()
+    table.string('orgid').notNullable()
     table.string('nazev', 512).notNullable()
     table.string('popis', 2048)
     // table.string('cilove_skupiny')

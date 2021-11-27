@@ -1,31 +1,34 @@
 
-import { TNAMES, MULTITENANT } from '../consts'
-import entity from 'entity-api-base'
+import { TNAMES } from '../consts'
 const conf = {
   tablename: TNAMES.PROJEKTY,
   editables: ['nazev', 'popis', 'cena', 'stadium', 'poloha', 'zanr']
 }
 
-export default { create, update, list, canIUpdate }
+export default (ctx) => {
+  const { knex, entityMWBase, ErrorClass } = ctx
+  const entity = entityMWBase(conf, knex, ErrorClass)
 
-async function list (query, orgid, knex) {
-  query.filter = query.filter || {}
-  MULTITENANT && Object.assign(query.filter, { orgid })
-  return entity.list(query, conf, knex)
-}
-
-function create (data, author, orgid, knex) {
-  data.manager = author
-  MULTITENANT && Object.assign(data, { orgid })
-  return entity.create(data, conf, knex)
-}
-
-function update (id, data, orgid, knex) {
-  return entity.update(id, data, conf, knex)
-}
-
-async function canIUpdate (id, user, orgid, knex) {
-  const cond = MULTITENANT ? { id, orgid } : { id }
-  const p = await knex(TNAMES.PROJEKTY).where(cond).first()
-  return p.manager.toString() === user.toString()
+  async function list (query, orgid) {
+    query.filter = query.filter || {}
+    Object.assign(query.filter, { orgid })
+    return entity.list(query)
+  }
+  
+  function create (data, author, orgid) {
+    Object.assign(data, { orgid, manager: author })
+    return entity.create(data)
+  }
+  
+  function update (id, data, orgid) {
+    return entity.update(id, data)
+  }
+  
+  async function canIUpdate (id, user, orgid) {
+    const cond = { id, orgid }
+    const p = await knex(TNAMES.PROJEKTY).where(cond).first()
+    return p.manager.toString() === user.toString()
+  }
+  
+  return { create, update, list, canIUpdate }
 }

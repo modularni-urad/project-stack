@@ -1,39 +1,37 @@
-import projekty from './middleware'
-import loadOrgID from './orgid_man'
+import Middlewarez from './middleware'
 
 export default (ctx) => {
-  const { knex, auth, JSONBodyParser } = ctx
+  const { auth, bodyParser, ErrorClass } = ctx
+  const projekty = Middlewarez(ctx)
   const app = ctx.express()
 
-  app.get('/', loadOrgID, (req, res, next) => {
-    projekty.list(req.query, req.orgid, knex).then(info => {
+  app.get('/', (req, res, next) => {
+    projekty.list(req.query, req.tenantid).then(info => {
       res.json(info)
-      next()
     }).catch(next)
   })
 
   app.post('/',
-    loadOrgID,
+    auth.session,
     auth.required,
-    JSONBodyParser,
+    bodyParser,
     (req, res, next) => {
-      projekty.create(req.body, auth.getUID(req), req.orgid, knex)
+      projekty.create(req.body, auth.getUID(req), req.tenantid)
         .then(created => { res.json(created[0]) })
         .catch(next)
     })
 
   app.put('/:id',
-    loadOrgID,
-    auth.required,
+    auth.session,
     (req, res, next) => { 
-      projekty.canIUpdate(req.params.id, auth.getUID(req), req.orgid, knex)
+      projekty.canIUpdate(req.params.id, auth.getUID(req), req.tenantid)
         .then(can => {
-          return can ? next() : next(401)
+          return can ? next() : next(new ErrorClass(401, 'you cannot update'))
         }).catch(next)
     },
-    JSONBodyParser,
+    bodyParser,
     (req, res, next) => {
-      projekty.update(req.params.id, req.body, req.orgid, knex)
+      projekty.update(req.params.id, req.body, req.tenantid)
         .then(updated => { res.json(updated[0]) })
         .catch(next)
     })

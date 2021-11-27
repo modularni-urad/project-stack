@@ -1,11 +1,6 @@
-/* global describe it */
-import _ from 'underscore'
-const chai = require('chai')
-chai.should()
-
 module.exports = (g) => {
-  //
-  const r = chai.request(g.baseurl)
+  const _ = g.require('underscore')
+  const r = g.chai.request(g.baseurl)
 
   const p = {
     nazev: 'proj1',
@@ -18,10 +13,10 @@ module.exports = (g) => {
     //
     it('must not create a new item without auth', async () => {
       const res = await r.post(`/`).send(p)
-      res.should.have.status(400)
+      res.should.have.status(401)
     })
 
-    it('shall create a new item without mandatory item', async () => {
+    it('must not create a new item without mandatory item', async () => {
       const res = await r.post(`/`).send(_.omit(p, 'nazev'))
         .set('Authorization', 'Bearer f')
       res.should.have.status(400)

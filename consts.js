@@ -1,4 +1,3 @@
-export const MULTITENANT = process.env.MULTITENANT || false
 
 export const TNAMES = {
   PROJEKTY: 'projekty'
