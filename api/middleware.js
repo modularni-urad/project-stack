@@ -6,7 +6,8 @@ const conf = {
 }
 
 export default (ctx) => {
-  const { knex, entityMWBase, ErrorClass } = ctx
+  const { knex, ErrorClass } = ctx
+  const entityMWBase = ctx.require('entity-api-base').default
   const entity = entityMWBase(conf, knex, ErrorClass)
 
   async function list (query, orgid) {
