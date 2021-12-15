@@ -4,6 +4,7 @@ module.exports = (g) => {
 
   const p = {
     nazev: 'proj1',
+    orgid: 'org1',
     popis: 'popis proj1',
     poloha: '47;31',
     zanr: 'zivpros'

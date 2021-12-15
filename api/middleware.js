@@ -1,8 +1,8 @@
 
-import { TNAMES } from '../consts'
+import { TNAMES, getQB } from '../consts'
 const conf = {
   tablename: TNAMES.PROJEKTY,
-  editables: ['nazev', 'popis', 'cena', 'stadium', 'poloha', 'zanr']
+  editables: ['nazev', 'orgid', 'popis', 'cena', 'stadium', 'poloha', 'zanr']
 }
 
 export default (ctx) => {
@@ -10,24 +10,22 @@ export default (ctx) => {
   const entityMWBase = ctx.require('entity-api-base').default
   const entity = entityMWBase(conf, knex, ErrorClass)
 
-  async function list (query, orgid) {
+  async function list (query, schema) {
     query.filter = query.filter || {}
-    Object.assign(query.filter, { orgid })
-    return entity.list(query)
+    return entity.list(query, schema)
   }
   
-  function create (data, author, orgid) {
-    Object.assign(data, { orgid, manager: author })
-    return entity.create(data)
+  function create (data, author, schema) {
+    Object.assign(data, { manager: author })
+    return entity.create(data, schema)
   }
   
-  function update (id, data, orgid) {
-    return entity.update(id, data)
+  function update (id, data, schema) {
+    return entity.update(id, data, schema)
   }
   
-  async function canIUpdate (id, user, orgid) {
-    const cond = { id, orgid }
-    const p = await knex(TNAMES.PROJEKTY).where(cond).first()
+  async function canIUpdate (id, user, schema) {
+    const p = await getQB(knex, TNAMES.PROJEKTY, schema).where({ id }).first()
     return p.manager.toString() === user.toString()
   }
   

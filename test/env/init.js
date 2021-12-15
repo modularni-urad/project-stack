@@ -35,10 +35,6 @@ module.exports = function (g) {
     await ApiModule.migrateDB(knex)
 
     const app = express()
-    app.use((req, res, next) => {
-      req.tenantid = 'testtenant'
-      next()
-    })
     const appContext = { 
       express, knex, auth, 
       bodyParser: express.json(),
