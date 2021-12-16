@@ -11,7 +11,7 @@ export default (ctx) => {
   const entity = entityMWBase(conf, knex, ErrorClass)
 
   async function list (query, schema) {
-    query.filter = query.filter || {}
+    query.filter = query.filter ? JSON.parse(query.filter) : undefined
     return entity.list(query, schema)
   }
   
